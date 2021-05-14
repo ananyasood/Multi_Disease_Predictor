@@ -13,10 +13,6 @@ def predict(values, dic):
         model = pickle.load(open('models/diabetes.pkl','rb'))
         values = np.asarray(values)
         return model.predict(values.reshape(1, -1))[0]
-    elif len(values) == 26:
-        model = pickle.load(open('models/breast_cancer.pkl','rb'))
-        values = np.asarray(values)
-        return model.predict(values.reshape(1, -1))[0]
     elif len(values) == 13:
         model = pickle.load(open('models/heart.pkl','rb'))
         values = np.asarray(values)
@@ -37,10 +33,6 @@ def home():
 @app.route("/diabetes", methods=['GET', 'POST'])
 def diabetesPage():
     return render_template('diabetes.html')
-
-@app.route("/cancer", methods=['GET', 'POST'])
-def cancerPage():
-    return render_template('breast_cancer.html')
 
 @app.route("/heart", methods=['GET', 'POST'])
 def heartPage():
