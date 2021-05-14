@@ -54,14 +54,6 @@ def kidneyPage():
 def liverPage():
     return render_template('liver.html')
 
-@app.route("/malaria", methods=['GET', 'POST'])
-def malariaPage():
-    return render_template('malaria.html')
-
-@app.route("/pneumonia", methods=['GET', 'POST'])
-def pneumoniaPage():
-    return render_template('pneumonia.html')
-
 @app.route("/predict", methods = ['POST', 'GET'])
 def predictPage():
     try:
@@ -74,40 +66,6 @@ def predictPage():
         return render_template("home.html", message = message)
 
     return render_template('predict.html', pred = pred)
-
-@app.route("/malariapredict", methods = ['POST', 'GET'])
-def malariapredictPage():
-    if request.method == 'POST':
-        try:
-            if 'image' in request.files:
-                img = Image.open(request.files['image'])
-                img = img.resize((36,36))
-                img = np.asarray(img)
-                img = img.reshape((1,36,36,3))
-                img = img.astype(np.float64)
-                model = load_model("models/malaria.h5")
-                pred = np.argmax(model.predict(img)[0])
-        except:
-            message = "Please upload an Image"
-            return render_template('malaria.html', message = message)
-    return render_template('malaria_predict.html', pred = pred)
-
-@app.route("/pneumoniapredict", methods = ['POST', 'GET'])
-def pneumoniapredictPage():
-    if request.method == 'POST':
-        try:
-            if 'image' in request.files:
-                img = Image.open(request.files['image']).convert('L')
-                img = img.resize((36,36))
-                img = np.asarray(img)
-                img = img.reshape((1,36,36,1))
-                img = img / 255.0
-                model = load_model("models/pneumonia.h5")
-                pred = np.argmax(model.predict(img)[0])
-        except:
-            message = "Please upload an Image"
-            return render_template('pneumonia.html', message = message)
-    return render_template('pneumonia_predict.html', pred = pred)
 
 if __name__ == '__main__':
 	app.run(debug = True)
